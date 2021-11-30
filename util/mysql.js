@@ -5,7 +5,9 @@ const Singleton = Symbol.for('MYSQL');
 const globalSymbols = Object.getOwnPropertySymbols(global);
 const hasDB = globalSymbols.indexOf(Singleton) > -1;
 if (!hasDB) {
-  dotenv.config();
+  if (process.env.NODE_ENV !== 'production') {
+    dotenv.config();
+  }
   const pool = mysql.createPool({
     host: process.env.MYSQL_HOST,
     user: process.env.MYSQL_USER,

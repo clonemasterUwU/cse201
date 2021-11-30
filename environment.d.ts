@@ -7,6 +7,7 @@ declare global {
       MYSQL_PASS: string;
       MYSQL_DATABASE: string;
       TABLE_USER: string;
+      SERVER: string;
     }
   }
 }

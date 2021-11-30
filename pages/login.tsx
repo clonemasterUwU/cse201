@@ -25,7 +25,7 @@ function LoginForm() {
     if (!resp.ok) {
       setErrorMessage(json.message);
     } else {
-      Router.replace('/');
+      Router.back();
     }
   };
   const usernameRef = useRef<HTMLInputElement>(null);

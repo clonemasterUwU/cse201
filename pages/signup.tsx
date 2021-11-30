@@ -1,17 +1,10 @@
 import React, { useRef, useState } from 'react';
 import { Button, Box, TextField, Grid } from '@mui/material';
-import { styled } from '@mui/material/styles';
 import Router from 'next/router';
-
-const Div = styled('div')(({ theme }) => ({
-  ...theme.typography.button,
-  backgroundColor: theme.palette.background.paper,
-  padding: theme.spacing(1),
-}));
 
 function LoginForm() {
   const handleSignUp = async () => {
-    const resp = await fetch('http://localhost:3000/api/signup', {
+    const resp = await fetch(`${process.env.NEXT_PUBLIC_VERCEL_URL}/api/signup`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

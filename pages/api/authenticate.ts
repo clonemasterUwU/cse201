@@ -17,20 +17,24 @@ export default async function login(req: NextApiRequest, res: NextApiResponse) {
   }
 
   const [rows] = await (pool as Pool).execute(
-    `select BIN_TO_UUID(uuid)id,email,password from ${process.env.TABLE_USER} where email = ?`,
+    `select BIN_TO_UUID(uuid)id,email,password,role from ${process.env.TABLE_USER} where email = ?`,
     [req.body.username]
   );
   if ((rows as RowDataPacket[]).length > 1) {
     res.status(500).json({ message: 'Internal Error' });
     return;
+  } else if ((rows as RowDataPacket[]).length === 0) {
+    res.status(401).json({ message: 'User not found' });
   }
+
   const user_record = (rows as RowDataPacket[])[0];
   const result = await compare(req.body.password, user_record.password);
   if (result) {
     const claims = {
       sub: user_record.uuid,
       email: user_record.email,
-      role: 'STANDARD',
+      role:
+        user_record.role === 1 ? 'STANDARD' : user_record.role === 2 ? 'MOD' : user_record.role === 3 ? 'ADMIN' : '',
     };
     const jwt = sign(claims, process.env.SECRET, { expiresIn: '1h' });
     res.setHeader(
