@@ -1,11 +1,15 @@
-import { Button, TextField, Grid, Box } from '@mui/material';
+import { Button, TextField, Grid, Box, IconButton, Typography } from '@mui/material';
 import { useState } from 'react';
-import { useRouter } from 'next/router';
+import { Router, useRouter } from 'next/router';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { searchResult } from './api/searchResult';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridOverlay } from '@mui/x-data-grid';
 import Apple from '@mui/icons-material/Apple';
 import Adb from '@mui/icons-material/Adb';
+import DesktopWindowsIcon from '@mui/icons-material/DesktopWindows';
+import SearchIcon from '@mui/icons-material/Search';
+import CircularProgress from '@mui/material/CircularProgress';
+
 const column: GridColDef[] = [
   { field: 'logo', width: 52, headerName: '', renderCell: (e) => <img src={e.value} width={40} height={40} /> },
   { field: 'name', minWidth: 150, headerName: 'App Name' },
@@ -13,31 +17,43 @@ const column: GridColDef[] = [
   { field: 'category', width: 150, headerName: 'Category' },
   {
     field: 'ios',
-    width: 150,
+    width: 75,
     headerName: 'IOS',
     renderCell: (e) =>
       e.value ? (
-        <a href={e.value}>
+        <IconButton href={e.value}>
           <Apple fontSize="large" color={'primary'} />
-        </a>
+        </IconButton>
       ) : (
         <Apple fontSize="large" color={'disabled'} />
       ),
   },
   {
     field: 'android',
-    width: 150,
+    width: 100,
     headerName: 'Android',
     renderCell: (e) =>
       e.value ? (
-        <a href={e.value}>
+        <IconButton href={e.value}>
           <Adb fontSize="large" color={'primary'} />
-        </a>
+        </IconButton>
       ) : (
         <Adb fontSize="large" color={'disabled'} />
       ),
   },
-  { field: 'pc', width: 150 },
+  {
+    field: 'pc',
+    width: 75,
+    headerName: 'PC',
+    renderCell: (e) =>
+      e.value ? (
+        <IconButton href={e.value}>
+          <DesktopWindowsIcon fontSize="large" color={'primary'} />
+        </IconButton>
+      ) : (
+        <DesktopWindowsIcon fontSize="large" color={'disabled'} />
+      ),
+  },
 ];
 export default function Search({ data, query }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const router = useRouter();
@@ -77,14 +93,30 @@ export default function Search({ data, query }: InferGetServerSidePropsType<type
             sx={{ width: 1 }}
           />
           <Button variant="outlined" onClick={handleSearch} disabled={!text} sx={{ width: 1 / 3 }}>
-            Search
+            <SearchIcon fontSize="large" />
           </Button>
         </Box>
       </Grid>
-      <Grid style={{ minWidth: '60vw', height: '80vh' }}>
-        <DataGrid rows={data} columns={column}></DataGrid>
+      <Grid display="flex" style={{ width: 800, height: '80vh' }}>
+        <DataGrid
+          rows={data}
+          columns={column}
+          components={{
+            NoRowsOverlay: NoRowsOverlay,
+          }}
+        ></DataGrid>
       </Grid>
     </Grid>
+  );
+}
+
+function NoRowsOverlay() {
+  const router = useRouter();
+  return (
+    <GridOverlay>
+      <Typography>App not found. Maybe</Typography>
+      <Button onClick={() => router.push('/user/add_request')}>Adding yours</Button>
+    </GridOverlay>
   );
 }
 export const getServerSideProps: GetServerSideProps = async (context) => {

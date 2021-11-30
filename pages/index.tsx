@@ -12,14 +12,7 @@ export default function Search() {
     router.push('/user/add_request');
   };
   return (
-    <Grid
-      container
-      spacing={0}
-      direction="column"
-      alignItems="center"
-      justifyContent="center"
-      style={{ minHeight: '100vh' }}
-    >
+    <Grid container spacing={0} direction="column" alignItems="center" justifyContent="center">
       <Box
         sx={{
           width: '40vw',

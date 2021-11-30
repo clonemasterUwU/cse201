@@ -21,5 +21,4 @@ async function add_request(req: NextApiRequest, res: NextApiResponse) {
     res.json({ message: 'ok' });
   }
 }
-export default add_request;
-// export default withAuth(add_request, 'STANDARD');
+export default withAuth(add_request, 'STANDARD');

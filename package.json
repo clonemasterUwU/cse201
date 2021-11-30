@@ -15,6 +15,7 @@
     "@mui/icons-material": "^5.0.5",
     "@mui/material": "^5.0.4",
     "@mui/x-data-grid": "^5.0.0-beta.5",
+    "babel-plugin-superjson-next": "^0.4.2",
     "bcrypt": "^5.0.1",
     "cookie": "^0.4.1",
     "dotenv": "^10.0.0",
@@ -25,6 +26,7 @@
     "react-dom": "17.0.2",
     "react-tinder-card": "^1.4.5",
     "styled-components": "^5.3.1",
+    "superjson": "^1.8.0",
     "swr": "^1.0.1"
   },
   "devDependencies": {
